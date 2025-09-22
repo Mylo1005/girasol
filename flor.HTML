@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mi girasol 🌻</title>
+  <style>
+    :root{
+      --bg: #fff7b0;
+      --txt: #704214;
+      --yellow: #ffd700;
+      --brown: #7b4a26;
+    }
+    html,body{height:100%;margin:0;}
+    body{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      background:var(--bg);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .canvas{ width:520px; max-width:95vw; }
+
+    svg{ display:block; width:100%; height:auto; }
+
+    /* Animación suave de balanceo para todo el grupo de pétalos */
+    .petals{
+      transform-box: fill-box;
+      transform-origin: 250px 200px;
+      animation: sway 6s ease-in-out infinite alternate;
+    }
+    @keyframes sway{
+      from{ transform: rotate(-6deg); }
+      to{   transform: rotate(6deg);  }
+    }
+
+    .center{ filter: drop-shadow(0 3px 6px rgba(0,0,0,0.15)); }
+
+    .message{
+      margin-top:14px;
+      text-align:center;
+      color:var(--txt);
+      font-weight:700;
+      font-size:20px;
+      line-height:1.2;
+    }
+
+    .btn {
+      margin-top:10px;
+      background:#ffd54a;
+      border:0;
+      padding:8px 14px;
+      border-radius:10px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow: 0 3px 0 rgba(0,0,0,0.08);
+    }
+    .btn:active{ transform: scale(.98); }
+  </style>
+</head>
+<body>
+  <div class="canvas">
+    <svg viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Girasol">
+      <!-- Grupo donde se generan los pétalos por JavaScript -->
+      <g id="petals" class="petals"></g>
+
+      <!-- Centro del girasol -->
+      <circle cx="250" cy="200" r="70" class="center" fill="#7b4a26" />
+      <!-- Pequeños puntitos oscuros para textura (se generan por JS) -->
+      <g id="dots" class="center"></g>
+    </svg>
+
+    <div class="message">
+      Te amo mi amor 💛<br>
+      Gracias por ser mi primavera 🌸<br>
+      Mi china hermosa 💕
+    </div>
+
+    <button class="btn" id="sorpresa" type="button">Presiona para sorpresa</button>
+  </div>
+
+  <script>
+    (function(){
+      const svgNS = "http://www.w3.org/2000/svg";
+      const petalsGroup = document.getElementById('petals');
+      const dotsGroup = document.getElementById('dots');
+      const centerX = 250, centerY = 200;
+      const petalCount = 24;
+      const petalRx = 24, petalRy = 80;
+      const petalDistance = 125; // Distancia vertical desde el centro para el pétalo "arriba"
+
+      // Crear pétalos (ellipse) y rotarlos alrededor del centro
+      for(let i=0; i<petalCount; i++){
+        const angle = i * (360 / petalCount);
+        const e = document.createElementNS(svgNS,'ellipse');
+        e.setAttribute('cx', centerX);
+        e.setAttribute('cy', centerY - petalDistance);
+        e.setAttribute('rx', petalRx);
+        e.setAttribute('ry', petalRy);
+        e.setAttribute('fill', '#ffd700');
+        e.setAttribute('transform', `rotate(${angle} ${centerX} ${centerY})`);
+        petalsGroup.appendChild(e);
+      }
+
+      // Puntos oscuros en el centro para dar textura
+      for(let y=-24; y<=24; y+=12){
+        for(let x=-24; x<=24; x+=12){
+          const d = document.createElementNS(svgNS,'circle');
+          d.setAttribute('cx', centerX + x*0.55);
+          d.setAttribute('cy', centerY + y*0.55);
+          d.setAttribute('r', (Math.random()*3 + 1).toFixed(2));
+          d.setAttribute('fill', '#633a20');
+          dotsGroup.appendChild(d);
+        }
+      }
+
+      // Botón sorpresa
+      document.getElementById('sorpresa').addEventListener('click', function(){
+        alert('Eres mi sol ☀️\nTe amo mi chinita hermosa 💛');
+      });
+    })();
+  </script>
+</body>
+</html>
